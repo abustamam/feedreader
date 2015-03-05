@@ -83,7 +83,7 @@ $(function() {
 
          it ('should be loaded', function() {
             expect($('.feed').children().length).toBeGreaterThan(0);
-         })
+         });
 
          // Return to default value
          afterEach(function(done){
