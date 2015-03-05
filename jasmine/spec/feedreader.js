@@ -9,11 +9,6 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a URL defined
-         * and that the URL is not empty.
-         */
-
         it('have URLs', function() {
             for (var i = 0; i < allFeeds.length; i++){
                 expect(allFeeds[i]['url']).toBeDefined();
@@ -21,13 +16,7 @@ $(function() {
             }
         });
 
-
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a name defined
-         * and that the name is not empty.
-         */
-
-         it('have names', function() {
+        it('have names', function() {
             for (var i = 0; i < allFeeds.length; i++){
                 expect(allFeeds[i]['name']).toBeDefined();
                 expect(allFeeds[i]['name'].length).not.toBe(0);
@@ -36,20 +25,12 @@ $(function() {
 
     });
 
-    /* TODO: Write a new test suite named "The menu" */
-
     describe('The menu', function() {
         var body = $('body');
 
         it('is hidden by default', function() {
             expect(body.hasClass('menu-hidden')).toBeTruthy();
         });
-
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
 
         describe('when clicked', function() {
             var menuIcon = $('.menu-icon-link');
@@ -67,16 +48,7 @@ $(function() {
         });
     });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
-
     describe('Initial Entries', function() {
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test wil require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
-
          beforeEach(function(done) {
             // Load first feed, call done() when done
             loadFeed(0, done);
@@ -86,28 +58,39 @@ $(function() {
             expect($('.feed').children().length).toBeGreaterThan(0);
          });
 
-    });
-
-    /* TODO: Write a new test suite named "New Feed Selection" */
-
-    describe('New Feed Selection', function() {
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
+        /* TODO: Add .header-subtitle to template, populate with 
+         * feed meta such as description and author. 
+         * The .header-subtitle should be empty initially (i.e. falsy),
+         * therefore when it is populated it should be truthy.
          */
 
-         var title;
-
-         beforeEach(function(done){
-            // Store blog title,
-            title = $('.header-title').text();
-            loadFeed(0,done);
-         });
-
-         it ('should change the feed', function(done) {
-            expect($('.header-title').text()).not.toBe(title);
+         it ('should have a subtitle', function() {
+            expect($('.header-subtitle').text()).toBeTruthy();
          });
 
     });
+
+    describe('New Feed Selection', function() {
+         beforeEach(function(done){
+            loadFeed(1,done);
+         });
+
+         it ('should change the feed', function() {
+            // Expect .header-title to change text to be the name of the feed. 
+            // Default .header-title text is 'feed' so this will only pass if names match
+            expect($('.header-title').text()).toBe(allFeeds[1]['name']);
+         });
+
+         it ('should be loaded', function() {
+            expect($('.feed').children().length).toBeGreaterThan(0);
+         })
+
+         // Return to default value
+         afterEach(function(done){
+            loadFeed(0,done);
+         });
+    });
+
+
 
 }());
